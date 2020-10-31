@@ -3,9 +3,12 @@
 //import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sam/Screens/Home.dart';
 import 'package:flutter_sam/Screens/Register.dart';
 
 class Login extends StatefulWidget {
+   static final String id='login';
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -55,10 +58,13 @@ void _login() async {
       )
   ).user;
   if (user != null) {
+
+    Navigator.pushReplacementNamed(context, Home.id);
     setState(() {
       _success = true;
       _userEmail = _email;
-       Navigator.pushReplacementNamed(context, "/Home");
+     //  Navigator.pushReplacementNamed(context, "/Home");
+      //   Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
     });
   } else {
     setState(() {
@@ -82,30 +88,31 @@ void _login() async {
   //       print('wong password');
   //       print(username);
   //       print(password);
-  //       showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return Dialog(
-  //               shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(40)),
-  //               elevation: 16,
-  //               child: Container(
-  //                 height: 100.0,
-  //                 width: 60.0,
-  //                 child: Column(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: <Widget>[
-  //                     Padding(
-  //                       padding: const EdgeInsets.all(8.0),
-  //                       child: Center(
-  //                         child: Text('Enter Correct User name and Password\n Admin\n 123',textAlign: TextAlign.center,),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             );
-  //           });
+
+        // showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return Dialog(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(40)),
+        //         elevation: 16,
+        //         child: Container(
+        //           height: 100.0,
+        //           width: 60.0,
+        //           child: Column(
+        //             mainAxisAlignment: MainAxisAlignment.center,
+        //             children: <Widget>[
+        //               Padding(
+        //                 padding: const EdgeInsets.all(8.0),
+        //                 child: Center(
+        //                   child: Text('Enter Correct User name and Password\n Admin\n 123',textAlign: TextAlign.center,),
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       );
+        //     });
   //     }
   //   }
   // }
@@ -123,19 +130,6 @@ void _login() async {
   //   print('work'); 
 
   // }
-@override
-  void initState() {
-
-    super.initState();
-    if(_auth.currentUser!=null)
-    {
-      Navigator.pushNamed(context, '/Home');
-    }
-
-    
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +210,9 @@ void _login() async {
               OutlineButton(
                 child: Text('Register Here'),
                 onPressed:(){
-                  Navigator.pushNamed(context, '/Register');
+
+                  Navigator.pushNamed(context, Register.id);
+                //   Navigator.of(context).pushNamedAndRemoveUntil('/Register', (Route<dynamic> route) => false); 
                 } //navigateToRegister(),
               ),
           

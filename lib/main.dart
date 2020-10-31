@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io' show Platform;
@@ -6,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter_sam/Screens/Home.dart';
 import 'package:flutter_sam/Screens/Register.dart';
+import 'package:flutter_sam/Screens/TaskPage.dart';
 
 import 'Screens/Login.dart';
 
@@ -29,23 +31,19 @@ Future<void> main() async {
             databaseURL: 'https://flutter-task-dd028.firebaseio.com', //
           ),
   );
-  //runApp(MyHomePage());
- var routes = <String, WidgetBuilder>{
-   '/Home': (context) =>  Home(),
-    '/Register':(context) => Register(),
-    '/Login':(context) =>  Login(),
-};
+
+  runApp(MyFirst());
+
+}
+//   MaterialApp(
+//      debugShowCheckedModeBanner: false,
+//      title: 'Flutter Task',
+//      home: Login(),
+//      routes: routes,
+// // Showing SplashScreen as the first screen when user launches the app.   
+//   ));
 
 
-  runApp(MaterialApp(
-     debugShowCheckedModeBanner: false,
-     title: 'Flutter Task',
-     home: Login(),
-     routes: routes,
-// Showing SplashScreen as the first screen when user launches the app.   
-  ));
-
-  
     
   //   MaterialApp(
   //   title: 'Named Routes Demo',
@@ -63,8 +61,48 @@ Future<void> main() async {
   // )
   
  // );
-}
 
+
+
+class MyFirst extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+     title: 'Flutter Task',
+     home: _getscreen(),
+          routes: {
+            Home.id:(context)=>Home(),
+            Login.id:(context)=>Login(),
+            Register.id:(context)=>Register(),
+            TaskPage.id:(context)=>TaskPage(),
+     
+          }
+         );
+           
+           
+             
+     }
+     
+       Widget _getscreen() {
+         if(FirebaseAuth.instance.currentUser!=null)
+         {
+              return Home();
+         }else
+         {
+              return Login();
+         }
+       }
+
+// var routes = <String, WidgetBuilder>{
+//    '/Home': (context) =>  Home(),
+//     '/Register':(context) => Register(),
+//     '/Login':(context) =>  Login(),
+//     '/TaskPage':(context)=> TaskPage(),
+  
+// };
+
+}
 // class MyApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {

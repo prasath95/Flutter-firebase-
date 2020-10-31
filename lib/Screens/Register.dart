@@ -4,6 +4,8 @@ import 'package:flutter_sam/Screens/Home.dart';
 import 'package:flutter_sam/Screens/Login.dart';
 
 class Register extends StatefulWidget {
+static final String id='register';
+
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -56,10 +58,14 @@ void _register() async {
       )
   ).user;
   if (user != null) {
+
+    Navigator.pushReplacementNamed(context, Home.id);
+
     setState(() {
       _success = true;
       _userEmail = _email;
-       Navigator.pushReplacementNamed(context, "/Home");
+  //     Navigator.pushReplacementNamed(context, "/Home");
+      //   Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
     });
   } else {
     setState(() {
@@ -192,7 +198,8 @@ void _register() async {
               OutlineButton(
                 child: Text('Log in Here'),
                 onPressed:(){
-                  Navigator.pushNamed(context, '/Login');
+                  Navigator.pushNamed(context, Login.id);
+                //    Navigator.of(context).pushNamedAndRemoveUntil('/Login', (Route<dynamic> route) => false);
                 }// navigateToLogin(),
               ),
             ],
