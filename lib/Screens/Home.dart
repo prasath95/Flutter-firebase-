@@ -13,11 +13,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
- List<Todo> list;
+ //List<Todo> list=[];
+ List<Map> list = [];
 
-  getTododata() {
-    getdata();
-  }
+  // getTododata() {
+  //   getdata();
+  // }
 
   getdata() async {
     String userid = FirebaseAuth.instance.currentUser.uid;
@@ -25,21 +26,36 @@ class _HomeState extends State<Home> {
     DatabaseReference db =
         FirebaseDatabase.instance.reference().child("todo").child(userid);
     await db.once().then((DataSnapshot snapshot) {
+
       Map<dynamic, dynamic> values = snapshot.value;
+  
+      // setState(() {
+      //   for(Todo td in list)
+      //   {
+      //     list.add(td);
+      //   }
+      // });
      
 
-      values.forEach((key, values) {
-        print(values["note"]);
-        // List<Todo> list = List();
-        list.add(values);
-      });
+        setState(() {
+          values.forEach((key, values) {
+                //print(values["note"]);
+                // List<Todo> list = List();
+                list.add(values);
+              });
+        });
+
+      
+
+
     });
   }
 
   @override
   void initState() {
     super.initState();
-    getTododata();
+   // getTododata();
+    getdata();
   }
 
   @override
@@ -66,27 +82,46 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: new Container(
-        child: new Column(
-          children: [
-            new Flexible(
-              child: new ListView.builder(
-                itemCount: list.length ,
-                itemBuilder: (context,index)
-                {
-                  return new Card(
-                    child: Column(
-                      children: [
-                        Text('ok'),
-                      ],
-                    ),
-                  );
-                }
-            ),
-            )
-          ],
+      body: Container(
+        
+        child: list.length < 1
+                ? Center(
+                  child: Column(
+                    children: [
+                      ListTile(
+                          leading: CircularProgressIndicator(), title: Text('Loading...')),
+                    ],
+                  ),
+                )
+                : 
+        ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context,index)
+          {
+              return GestureDetector(
+                              child: Card(child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment:CrossAxisAlignment.start, 
+                  children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('${list[index]['note']}'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Status - "+'${list[index]['status']}'),
+                      )
+                ],),),
+                onTap: ()
+                
+                   => Scaffold
+                    .of(context)
+                    .showSnackBar(SnackBar(content: Text(index.toString()))),
+                
+              );
+          })
         ),
-      ),
+    
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigator.pushNamedAndRemoveUntil(context, '/TaskPage');
